@@ -1,0 +1,16 @@
+[
+  {
+    "company": "google",
+    "email": "google@gmail.com",
+    "salt": "7fc3b18d933633b29760c57b81a113cc",
+    "passwordHash": "1ff6723f5596980164acd36699cdb77a2babb9c46e5135b7bbffb276e3bb68e8bb66f045bf019508fbc5584a1e8352b32e14f787316d793ede04f0df0f19f29b",
+    "createdAt": "2026-06-26T15:21:33.010Z"
+  },
+  {
+    "company": "thierry gmbh",
+    "email": "thierry@gmail.com",
+    "salt": "dce8134596b4b75bc126a75bc3750a65",
+    "passwordHash": "feb16fc7722675fd33b5a260ada67041c7bf30641143c1900f0abf969a689a8e7d83c5489084dd57ca0d93c65dd70953ad2ed9e44dd5a694a664a921d8cfb130",
+    "createdAt": "2026-06-29T07:15:38.159Z"
+  }
+]
