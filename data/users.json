@@ -12,5 +12,12 @@
     "salt": "dce8134596b4b75bc126a75bc3750a65",
     "passwordHash": "feb16fc7722675fd33b5a260ada67041c7bf30641143c1900f0abf969a689a8e7d83c5489084dd57ca0d93c65dd70953ad2ed9e44dd5a694a664a921d8cfb130",
     "createdAt": "2026-06-29T07:15:38.159Z"
+  },
+  {
+    "company": "bwd",
+    "email": "marco.schindler@bwdbern.ch",
+    "salt": "0a9c04b1e73dfe242670c742e6cf1367",
+    "passwordHash": "f69b57a3c95e9cb2886844d11cf105d5500c1559b0c118d1c0c0406542a33d8116437843802bb82b66bfc6c50e241b900f76b775c532d9925c16b8cffc31a211",
+    "createdAt": "2026-07-28T11:30:21.397Z"
   }
 ]
