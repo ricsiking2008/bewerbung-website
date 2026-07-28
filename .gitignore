@@ -6,7 +6,6 @@ dist/
 .env
 .env.*
 !.env.example
-data/users.json
 
 # Private application documents — never commit the actual files
 private-documents/*

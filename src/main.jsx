@@ -263,6 +263,75 @@ const navItems = [
   { href: "/documents", label: "Documents", locked: true },
 ];
 
+const projects = [
+  {
+    name: "Chess",
+    type: "Windows Game",
+    summary: "Ein eigenes Schachspiel für Windows mit klassischer Spiellogik.",
+    technologies: ["C++", "Windows", "Game Logic"],
+    actions: [
+      { label: "Play / .exe", href: "/api/projects/download/chess" },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/chess" },
+    ],
+    placeholder: "chess",
+  },
+  {
+    name: "Jump and Run",
+    type: "Windows Game",
+    summary: "Ein 2D-Jump-and-Run mit Levels, Steuerung und Retro-Feeling.",
+    technologies: ["C#", "WinForms", "Game Design"],
+    actions: [
+      { label: "Play / .exe", href: "/api/projects/download/jump-and-run" },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/jump-and-run" },
+    ],
+    placeholder: "jump",
+  },
+  {
+    name: "VendoSwiss",
+    type: "Web Project",
+    summary: "Ein eigenständiges Webprojekt mit Fokus auf klare Abläufe und Benutzerführung.",
+    technologies: ["HTML", "CSS", "JavaScript"],
+    actions: [
+      { label: "Website testen", href: "https://vendoswiss.ch", external: true },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/vendoswiss" },
+    ],
+    placeholder: "vendo",
+  },
+  {
+    name: "Stahlpartner",
+    type: "Website",
+    summary: "Unternehmenswebsite mit mehreren Inhaltsseiten und einem Anfragebereich.",
+    technologies: ["HTML", "CSS", "JavaScript", "PHP"],
+    actions: [
+      { label: "Website testen", href: "https://stahlpartner.ch", external: true },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/stahlpartner" },
+    ],
+    placeholder: "stahl",
+  },
+  {
+    name: "Swissactive",
+    type: "App",
+    summary: "Eine App-Idee rund um Aktivitäten und Wanderungen in der Schweiz.",
+    technologies: ["C#", ".NET MAUI", "XAML"],
+    actions: [
+      { label: "App herunterladen", href: "/api/projects/download/swissactive" },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/swissactive" },
+    ],
+    placeholder: "swiss",
+  },
+  {
+    name: "Health Clock",
+    type: "Hardware Project",
+    summary: "Ein kleines Hardware-Projekt mit Sensorik und gesundheitsbezogenen Anzeigen.",
+    technologies: ["Arduino", "C++", "Hardware"],
+    actions: [
+      { label: "Projekt öffnen", href: "/api/projects/preview/health-clock" },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/health-clock" },
+    ],
+    placeholder: "clock",
+  },
+];
+
 function LockIcon() {
   return (
     <span className="lock-icon" aria-label="Gesperrt" role="img">
@@ -494,6 +563,60 @@ function HomePage() {
         <a className="scroll-hint" href="/about" aria-label="Mehr über mich">
           v
         </a>
+      </section>
+    </main>
+  );
+}
+
+function ProjectsPage() {
+  return (
+    <main className="projects-page" style={{ "--accent": pages["/projects"].accent }}>
+      <section className="projects-hero" aria-labelledby="projects-title">
+        <div className="projects-hero-copy">
+          <p className="eyebrow">Portfolio / Auswahl</p>
+          <h1 id="projects-title">Projects</h1>
+        </div>
+        <p>Eine Auswahl aus Websites, Apps, Spielen und kleinen Experimenten.</p>
+      </section>
+
+      <section className="projects-grid" aria-label="Projektübersicht">
+        {projects.map((project, index) => (
+          <article className="project-card" key={project.name}>
+            <div className={`project-image-placeholder project-image-${project.placeholder}`}>
+              <span>{String(index + 1).padStart(2, "0")}</span>
+              <strong>Bild folgt</strong>
+              <small>{project.type}</small>
+            </div>
+            <div className="project-card-content">
+              <div className="project-card-heading">
+                <div>
+                  <p className="panel-label">{project.type}</p>
+                  <h2>{project.name}</h2>
+                </div>
+                <span className="project-index">0{index + 1}</span>
+              </div>
+              <p className="project-summary">{project.summary}</p>
+              <div className="project-tags" aria-label={`Technologien für ${project.name}`}>
+                {project.technologies.map((technology) => <span key={technology}>{technology}</span>)}
+              </div>
+              <div className="project-actions">
+                {project.actions.map((action) => action.disabled ? (
+                  <span className="project-action is-placeholder" key={action.label} title={action.hint}>{action.label}</span>
+                ) : (
+                  <a
+                    className="project-action"
+                    href={action.href}
+                    key={action.label}
+                    target={action.external ? "_blank" : undefined}
+                    rel={action.external ? "noreferrer" : undefined}
+                  >
+                    {action.label} <span>{action.external ? "↗" : "↓"}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
       </section>
     </main>
   );
@@ -841,6 +964,8 @@ function App() {
         <LoginPage />
       ) : activePath === "/documents" ? (
         <DocumentsPage />
+      ) : activePath === "/projects" ? (
+        <ProjectsPage />
       ) : page ? (
         <PlaceholderPage page={page} />
       ) : (
