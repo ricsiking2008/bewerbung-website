@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Smartwatch Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial;
+      background: #0f0f0f;
+      color: white;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 24px;
+      text-align: center;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .card {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .big {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    canvas {
+      background: #1e1e1e;
+      border-radius: 15px;
+      padding: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>⌚ Smartwatch Dashboard</header>
+
+<div class="grid">
+
+  <div class="card">
+    <div>❤️ BPM</div>
+    <div class="big" id="bpm">-</div>
+  </div>
+
+  <div class="card">
+    <div>👣 Steps</div>
+    <div class="big" id="steps">-</div>
+  </div>
+
+  <div class="card">
+    <div>🌡 Temperature</div>
+    <div class="big" id="temp">-</div>
+  </div>
+
+  <div class="card">
+    <div>💧 Humidity %</div>
+    <div class="big" id="hum">-</div>
+  </div>
+
+</div>
+
+<div class="card" style="margin:20px;">
+  <h3>📊 Steps History</h3>
+  <canvas id="chart"></canvas>
+</div>
+
+<script>
+
+let chart;
+
+
+async function loadData() {
+  const res = await fetch("/data");
+  const data = await res.json();
+
+  document.getElementById("bpm").innerText = data.bpm || 0;
+  document.getElementById("steps").innerText = data.steps || 0;
+  document.getElementById("temp").innerText = data.temp?.toFixed(1) || 0;
+  document.getElementById("hum").innerText = data.humidity?.toFixed(1) || 0;
+}
+
+async function loadHistory() {
+  const res = await fetch("/history");
+  const data = await res.json();
+
+  const labels = data.map(d => {
+    const date = new Date(d.time);
+    return date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  });
+
+  const steps = data.map(d => d.steps);
+
+  if (!chart) {
+    const ctx = document.getElementById("chart");
+
+    chart = new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: labels,
+        datasets: [{
+          label: "Steps over time",
+          data: steps,
+          borderColor: "lime",
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                const d = data[context.dataIndex];
+                const time = new Date(d.time).toLocaleString();
+                return `Steps: ${d.steps} (${time})`;
+              }
+            }
+          }
+        }
+      }
+    });
+
+  } else {
+    chart.data.labels = labels;
+    chart.data.datasets[0].data = steps;
+    chart.update();
+  }
+}
+
+setInterval(() => {
+  loadData();
+  loadHistory();
+}, 1000);
+
+loadData();
+loadHistory();
+
+</script>
+
+</body>
+</html>

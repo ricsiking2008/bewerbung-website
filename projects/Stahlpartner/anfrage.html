@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fertigungsanfrage senden | Stahlpartner.ch</title>
+  <meta name="description" content="Senden Sie Ihre Zeichnung oder Projektbeschreibung f&uuml;r Metallteile, Schweisskonstruktionen und Baugruppen.">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">SP</span><span><strong>Stahlpartner.ch</strong><small>Vendo Swiss Solution AG</small></span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="main-nav">Menu</button>
+    <nav class="main-nav" id="main-nav">
+      <a href="leistungen.html">Leistungen</a><a href="branchen.html">Branchen</a><a href="produktionsnetzwerk.html">Produktionsnetzwerk</a><a href="prozess.html">Prozess</a><a href="referenzen.html">Referenzen</a><a href="ueber-uns.html">&Uuml;ber uns</a><a class="nav-cta active" href="anfrage.html">Anfrage</a>
+    </nav>
+  </header>
+  <main>
+    <section class="page-hero">
+      <p class="eyebrow">Anfrage</p>
+      <h1>Fertigungsanfrage senden</h1>
+      <p>Senden Sie uns Ihre Zeichnung oder Projektbeschreibung. Wir pr&uuml;fen Ihr Vorhaben und melden uns zeitnah mit einer Einsch&auml;tzung oder einem Angebot.</p>
+    </section>
+    <section class="section form-layout">
+      <form class="request-form" id="request-form" action="send-anfrage.php" method="post" enctype="multipart/form-data">
+        <label>Firma<input name="firma" autocomplete="organization"></label>
+        <label>Name<input name="name" autocomplete="name" required></label>
+        <label>Email<input name="email" type="email" autocomplete="email" required></label>
+        <label>Telefon<input name="telefon" autocomplete="tel"></label>
+        <label class="full">Beschreibung<textarea name="beschreibung" rows="7" required></textarea></label>
+        <label class="full">Datei Upload<input name="datei" type="file" accept=".pdf,.jpg,.jpeg,.png,.dxf,.dwg,.step,.stp,.zip"></label>
+        <p class="form-note">Sie k&ouml;nnen eine Datei mitsenden: PDF, JPG, PNG, DXF, DWG, STEP, STP oder ZIP bis maximal 15 MB.</p>
+        <button class="button primary" type="submit">Anfrage senden</button>
+      </form>
+      <aside class="contact-panel">
+        <h2>Kontakt</h2>
+        <p>Beschreiben Sie kurz Material, Menge, Masse, Termin und vorhandene Zeichnungen.</p>
+        <a href="mailto:info@stahlpartner.ch">info@stahlpartner.ch</a>
+      </aside>
+    </section>
+  </main>
+  <footer class="site-footer"><p><strong>Stahlpartner.ch</strong> ist ein Angebot der Vendo Swiss Solution AG und organisiert Fertigungsleistungen &uuml;ber externe Partnerbetriebe.</p><a href="mailto:info@stahlpartner.ch">info@stahlpartner.ch</a></footer>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

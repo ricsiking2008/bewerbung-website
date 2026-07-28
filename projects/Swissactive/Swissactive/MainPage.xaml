@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Swissactive.MainPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+    <ScrollView>
+        <Grid RowDefinitions="Auto, Auto, Auto">
+            <Grid Grid.Row="0" ColumnDefinitions="*, Auto" Padding="20">
+                <Image Source="swissactive_logo.png" HeightRequest="120" HorizontalOptions="Start" />
+                <Button Grid.Column="1" Text="Login" Clicked="OnLoginClicked" BackgroundColor="#E0E0E0" TextColor="Black" CornerRadius="20" />
+            </Grid>
+
+            <Grid Grid.Row="1" HeightRequest="450">
+                <Image Source="hintergrund.jpeg" Aspect="AspectFill" />
+                <BoxView Color="#B3000000" />
+                <VerticalStackLayout VerticalOptions="Center" Spacing="20" Padding="30">
+                    <Label Text="SwissActive" TextColor="#09BC8A" FontAttributes="Bold" HorizontalOptions="Center" />
+                    <Label Text="Entdecke die besten Wanderwege" TextColor="White" FontSize="32" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                    <Button Text="Wanderungen suchen" Clicked="OnWanderungenClicked" BackgroundColor="#09BC8A" TextColor="White" HeightRequest="60" CornerRadius="30" />
+                    <Button Text="Meine Favoriten" Clicked="OnFavoritesClicked" BackgroundColor="Gold" TextColor="Black" HeightRequest="60" CornerRadius="30" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <VerticalStackLayout Grid.Row="2" Padding="30" Spacing="25" BackgroundColor="#F9F9F9">
+                <Label Text="Hilfe &amp; FAQ" FontSize="26" FontAttributes="Bold" TextColor="Black" Margin="0,0,0,10" />
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Wie speichere ich eine Wanderung?" FontAttributes="Bold" TextColor="Black" FontSize="16" />
+                    <Label Text="Klicke in der Liste auf 'Details' und wähle dann 'In Favoriten speichern'. Deine Auswahl findest du unter 'Meine Favoriten'." TextColor="#444444" LineHeight="1.2" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Wie lösche ich Favoriten?" FontAttributes="Bold" TextColor="Black" FontSize="16" />
+                    <Label Text="Gehe zu 'Meine Favoriten' und klicke beim entsprechenden Eintrag auf den roten 'Löschen'-Button." TextColor="#444444" LineHeight="1.2" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Muss ich angemeldet sein?" FontAttributes="Bold" TextColor="Black" FontSize="16" />
+                    <Label Text="Du kannst Wanderungen auch ohne Login ansehen. Um jedoch personalisierte Favoriten zu speichern, empfehlen wir eine Anmeldung." TextColor="#444444" LineHeight="1.2" />
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Sind die Karten offline verfügbar?" FontAttributes="Bold" TextColor="Black" FontSize="16" />
+                    <Label Text="Aktuell benötigt die App eine Internetverbindung, um die neuesten Bilder und Routendetails zu laden." TextColor="#444444" LineHeight="1.2" />
+                </VerticalStackLayout>
+ 
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Wie kontaktiere ich den Support?" FontAttributes="Bold" TextColor="Black" FontSize="16" />
+                    <Label Text="Bei technischen Problemen sende uns bitte eine E-Mail an support@swissactive.ch." TextColor="#444444" LineHeight="1.2" />
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

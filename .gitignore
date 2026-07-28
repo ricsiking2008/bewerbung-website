@@ -1,0 +1,25 @@
+# Dependencies and generated frontend build
+node_modules/
+dist/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+data/users.json
+
+# Private application documents — never commit the actual files
+private-documents/*
+!private-documents/.gitkeep
+!private-documents/README.md
+
+# Temporary files, logs and operating-system metadata
+tmp/
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local editor settings
+.vscode/
+.idea/

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Swissactive.FavoritesPage"
+             Title="Meine Favoriten"
+             BackgroundColor="White">
+    <Grid RowDefinitions="Auto, *">
+        <Label Text="Deine gespeicherten Wege" Padding="20" FontSize="24" FontAttributes="Bold" TextColor="Black" />
+        <CollectionView Grid.Row="1" x:Name="FavList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="10,5" Padding="15" BackgroundColor="#F9F9F9">
+                        <Grid ColumnDefinitions="*, Auto">
+                            <Label Text="{Binding .}" VerticalOptions="Center" TextColor="Black" FontSize="18" />
+                            <Button Grid.Column="1" Text="Löschen" Clicked="OnDeleteClicked" CommandParameter="{Binding .}" BackgroundColor="Red" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
