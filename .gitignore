@@ -10,6 +10,7 @@ data/users.json
 
 # Private application documents — never commit the actual files
 private-documents/*
+!private-documents/*.pdf
 !private-documents/.gitkeep
 !private-documents/README.md
 

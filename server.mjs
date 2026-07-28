@@ -2,7 +2,7 @@ import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } fr
 import { promisify } from "node:util";
 import { createReadStream, existsSync, promises as fs } from "node:fs";
 import { createServer } from "node:http";
-import { extname, join, normalize, resolve } from "node:path";
+import { extname, join, normalize, resolve, sep } from "node:path"; // 'sep' hinzugefügt
 
 const scrypt = promisify(scryptCallback);
 const root = process.cwd();
@@ -34,7 +34,7 @@ function addSecurityHeaders(response) {
   response.setHeader("X-Frame-Options", "DENY");
   response.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
   response.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=()");
-  response.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'");
+  response.setHeader("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'");
 }
 
 function sendJson(response, status, body) {
@@ -66,7 +66,7 @@ function clearSessionCookie(response) {
 }
 
 function getClientIp(request) {
-  return request.socket.remoteAddress || "unknown";
+  return request.headers["x-forwarded-for"] || request.socket.remoteAddress || "unknown";
 }
 
 function canAttemptLogin(ip) {
@@ -98,6 +98,18 @@ async function readJson(request) {
 }
 
 async function getUsers() {
+  const email = process.env.AUTH_EMAIL?.trim().toLowerCase();
+  const password = process.env.AUTH_PASSWORD;
+
+  // On Render, credentials live in environment variables rather than in Git.
+  if (email && password) {
+    return [{
+      company: process.env.AUTH_COMPANY?.trim() || "Bewerbungsunternehmen",
+      email,
+      environmentPassword: password,
+    }];
+  }
+
   try {
     return JSON.parse(await fs.readFile(usersPath, "utf8"));
   } catch (error) {
@@ -107,6 +119,11 @@ async function getUsers() {
 }
 
 async function passwordMatches(password, user) {
+  if (typeof user.environmentPassword === "string") {
+    const submitted = Buffer.from(password);
+    const expected = Buffer.from(user.environmentPassword);
+    return submitted.length === expected.length && timingSafeEqual(submitted, expected);
+  }
   const derived = await scrypt(password, Buffer.from(user.salt, "hex"), 64);
   return timingSafeEqual(derived, Buffer.from(user.passwordHash, "hex"));
 }
@@ -123,7 +140,16 @@ function currentSession(request) {
 
 function requireSameOrigin(request, response) {
   const origin = request.headers.origin;
-  if (origin && origin !== `http://${request.headers.host}` && origin !== "http://127.0.0.1:5173") {
+  if (!origin) return true; // Gleiche Herkunft bei direkten Requests ohne Origin Header erlauben
+
+  const host = request.headers.host;
+  const proto = request.headers["x-forwarded-proto"] || "http";
+  
+  // Überprüfe dynamisch ob HTTP oder HTTPS übereinstimmen
+  const expectedOrigin = `${proto}://${host}`;
+  const isDevOrigin = origin === "http://127.0.0.1:5173" || origin === "http://localhost:5173";
+
+  if (origin !== expectedOrigin && !isDevOrigin) {
     sendJson(response, 403, { error: "Ungültige Anfrage." });
     return false;
   }
@@ -159,9 +185,13 @@ async function serveDocument(request, response, fileName, download = false) {
   if (!currentSession(request)) return sendJson(response, 401, { error: "Bitte zuerst einloggen." });
   const safeName = normalize(fileName).replace(/^([\\/])+/, "");
   const fullPath = resolve(documentsPath, safeName);
-  if (!fullPath.startsWith(resolve(documentsPath) + "\\") || !existsSync(fullPath)) {
+  
+  // 'sep' verwendet (funktioniert auf Linux und Windows!)
+  const baseResolved = resolve(documentsPath);
+  if (!fullPath.startsWith(baseResolved + sep) || !existsSync(fullPath)) {
     return sendJson(response, 404, { error: "Dokument nicht gefunden." });
   }
+  
   addSecurityHeaders(response);
   response.writeHead(200, {
     "Content-Type": MIME_TYPES[extname(fullPath).toLowerCase()] || "application/octet-stream",
@@ -177,7 +207,10 @@ async function serveApp(response, pathname) {
   const requested = pathname === "/" ? "index.html" : pathname.slice(1);
   const candidate = resolve(distPath, requested);
   const isAsset = requested.startsWith("assets/");
-  const filePath = candidate.startsWith(resolve(distPath) + "\\") && existsSync(candidate)
+  
+  // 'sep' verwendet (funktioniert auf Linux und Windows!)
+  const baseResolved = resolve(distPath);
+  const filePath = candidate.startsWith(baseResolved + sep) && existsSync(candidate)
     ? candidate
     : !isAsset ? join(distPath, "index.html") : null;
 
@@ -226,6 +259,6 @@ createServer(async (request, response) => {
     console.error(error);
     sendJson(response, 500, { error: "Interner Serverfehler." });
   }
-}).listen(port, production ? "0.0.0.0" : "127.0.0.1", () => {
-  console.log(`Backend läuft auf http://127.0.0.1:${port}`);
+}).listen(port, "0.0.0.0", () => {
+  console.log(`Server läuft auf Port ${port}`);
 });
