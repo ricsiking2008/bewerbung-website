@@ -47,19 +47,16 @@ const skills = [
 
 const pages = {
   "/projects": {
-    eyebrow: "Portfolio",
     title: "Projects",
     accent: "#7dd3fc",
     pattern: "grid",
   },
   "/about": {
-    eyebrow: "Person",
     title: "About me",
     accent: "#fb7185",
     pattern: "orbit",
   },
   "/hobbies": {
-    eyebrow: "Outside code",
     title: "Hobbies",
     accent: "#34d399",
     pattern: "waves",
@@ -573,7 +570,6 @@ function ProjectsPage() {
     <main className="projects-page" style={{ "--accent": pages["/projects"].accent }}>
       <section className="projects-hero" aria-labelledby="projects-title">
         <div className="projects-hero-copy">
-          <p className="eyebrow">Portfolio / Auswahl</p>
           <h1 id="projects-title">Projects</h1>
         </div>
         <p>Eine Auswahl aus Websites, Apps, Spielen und kleinen Experimenten.</p>
