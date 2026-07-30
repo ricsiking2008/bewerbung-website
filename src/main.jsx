@@ -15,7 +15,7 @@ const profile = {
   location: "Schweiz",
   email: "ricsieber@gmail.com",
   intro:
-    "Ich interessiere mich für moderne Webentwicklung, klare Oberflächen und Projekte, bei denen man wirklich etwas lernt.",
+    "Die Informatik begeistert mich, weil es fast immer mehr als nur eine richtige Lösung gibt. Genau dieses kreative Denken, das Ausprobieren und das kontinuierliche Lernen motivieren mich jeden Tag.",
 };
 
 const skills = [
@@ -47,23 +47,23 @@ const skills = [
 
 const pages = {
   "/projects": {
-    title: "Projects",
+    title: "Projekte",
     accent: "#7dd3fc",
     pattern: "grid",
   },
   "/about": {
-    title: "About me",
+    title: "Über mich",
     accent: "#fb7185",
     pattern: "orbit",
   },
   "/hobbies": {
-    title: "Hobbies",
+    title: "Hobbys",
     accent: "#34d399",
     pattern: "waves",
   },
   "/documents": {
     eyebrow: "Private area",
-    title: "Documents",
+    title: "Bewerbungsunterlagen",
     accent: "#facc15",
     pattern: "locked",
     locked: true,
@@ -125,7 +125,7 @@ const pageDetails = {
     {
       kicker: "Winter",
       title: "Snowboarding",
-      text: "Snowboarden bedeutet für mich Freiheit und Spass in den Bergen. Ich bin gerne draussen und geniesse es, gemeinsam mit meiner Familie und meinen Freunden unterwegs zu sein. Dabei geht es nicht nur um den Sport, sondern auch um die Zeit zusammen und die Erlebnisse auf der Piste.",
+      text: "Snowboarden bedeutet für mich Freiheit und Spass in den Bergen. Ich bin gerne draussen und geniesse es, gemeinsam mit meiner Familie und meinen Freunden unterwegs zu sein. Neben dem Sport schätze ich vor allem die gemeinsame Zeit und die besonderen Erlebnisse auf der Piste.",
     },
   ],
   "/documents": [
@@ -254,10 +254,10 @@ const aboutStats = [
 
 const navItems = [
   { href: "/", label: "Home" },
-  { href: "/projects", label: "Projects" },
-  { href: "/about", label: "About me" },
-  { href: "/hobbies", label: "Hobbies" },
-  { href: "/documents", label: "Documents", locked: true },
+  { href: "/projects", label: "Projekte" },
+  { href: "/about", label: "Über mich" },
+  { href: "/hobbies", label: "Hobbys" },
+  { href: "/documents", label: "Bewerbungsunterlagen", locked: true },
 ];
 
 const projects = [
@@ -538,8 +538,8 @@ function HomePage() {
             ))}
           </div>
           <div className="hero-links" aria-label="Wichtige Links">
-            <a href="/projects">-&gt; My projects</a>
-            <a href={`mailto:${profile.email}`}>-&gt; Email</a>
+            <a href="/documents">-&gt; Bewerbungs-<br></br>unterlagen</a>
+            <a href={`mailto:${profile.email}`}>-&gt; Kontakt</a>
           </div>
         </div>
 
