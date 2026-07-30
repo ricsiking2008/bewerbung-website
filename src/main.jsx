@@ -884,7 +884,7 @@ function DocumentsPage() {
         {status === "signed-out" ? <>
           <p className="eyebrow">Privater Bereich</p>
           <h1 id="documents-title">Dokumente</h1>
-          <p className="auth-intro">Bitte logge dich ein, um die Bewerbungsunterlagen zu sehen.</p>
+          <p className="auth-intro">Bitte loggen sie sich ein, um die Bewerbungsunterlagen zu sehen.</p>
           <a className="auth-button" href="/login">Zum Login</a>
         </> : null}
         {status === "error" ? <p className="auth-error">Die Dokumente konnten gerade nicht geladen werden.</p> : null}
