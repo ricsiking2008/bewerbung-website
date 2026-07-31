@@ -623,7 +623,17 @@ function ProjectsPage() {
           <article className="project-card" key={project.name}>
             <div className={`project-image-placeholder${project.placeholder ? ` project-image-${project.placeholder}` : ""}`}>
               {project.image ? <img src={project.image} alt={`Vorschau des Projekts ${project.name}`} /> : null}
-              {!project.image ? <strong>{project.placeholder === "video" ? "Demo-Video verfügbar" : "Quellcode-Projekt"}</strong> : null}
+              {!project.image ? (
+                project.placeholder === "video" ? (
+                  <div className="project-spotlight-copy">
+                    <span>Featured Preview</span>
+                    <strong>Interaktive Vorschau</strong>
+                    <small>Ein kurzer Blick auf die Idee, klar und direkt inszeniert.</small>
+                  </div>
+                ) : (
+                  <strong>Quellcode-Projekt</strong>
+                )
+              ) : null}
               <small>{project.type}</small>
             </div>
             <div className="project-card-content">

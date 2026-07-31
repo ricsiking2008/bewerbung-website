@@ -1855,9 +1855,17 @@ h1 span {
 .project-image-placeholder::after { width: 180px; height: 180px; background: color-mix(in srgb, var(--accent), transparent 89%); transform: translate(-88%, 48%); }
 .project-image-placeholder span { position: absolute; top: 20px; left: 22px; color: var(--accent); font-family: "Courier New", monospace; font-size: 0.78rem; letter-spacing: 0.12em; }
 .project-image-placeholder strong { padding: 13px 17px; border: 1px solid rgba(247, 239, 231, 0.28); border-radius: 999px; background: rgba(17, 16, 15, 0.55); font-size: 0.92rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.project-image-video { min-height: 280px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, 0.58fr); align-items: end; justify-items: start; gap: 20px; padding: 30px 28px; background:
+  radial-gradient(circle at 72% 22%, rgba(125, 211, 252, 0.18), transparent 170px),
+  linear-gradient(135deg, #182c31, #151315); }
+.project-image-video::before { width: 148px; height: 148px; transform: translate(28%, -26%); border-color: color-mix(in srgb, var(--accent), transparent 55%); }
+.project-image-video::after { width: 110px; height: 110px; transform: translate(84%, 54%); background: color-mix(in srgb, var(--accent), transparent 92%); }
+.project-spotlight-copy { position: relative; z-index: 1; display: grid; gap: 12px; align-self: center; max-width: 260px; text-align: left; }
+.project-spotlight-copy::after { width: 56px; height: 56px; margin-top: 6px; border: 1px solid color-mix(in srgb, var(--accent), white 5%); border-radius: 50%; background: radial-gradient(circle at 35% 35%, rgba(247, 239, 231, 0.95) 0 10%, transparent 11% 100%); box-shadow: 0 0 0 8px rgba(125, 211, 252, 0.08); content: ""; }
+.project-spotlight-copy span { position: static; color: color-mix(in srgb, var(--accent), white 12%); font-size: 0.76rem; letter-spacing: 0.24em; text-transform: uppercase; }
+.project-spotlight-copy strong { padding: 0; border: 0; border-radius: 0; background: transparent; color: #f7efe7; font-size: clamp(1.45rem, 2.15vw, 2rem); line-height: 0.98; letter-spacing: -0.04em; text-transform: none; }
+.project-spotlight-copy small { color: rgba(247, 239, 231, 0.66); font-size: 0.88rem; line-height: 1.45; }
 .project-image-placeholder img { width: 100%; height: 100%; min-height: 220px; object-fit: cover; }
-.project-image-video { min-height: 180px; background: linear-gradient(135deg, #182c31, #151315); }
-.project-image-video::before { width: 120px; height: 120px; transform: translate(80%, -20%); }
 .project-image-placeholder small { position: absolute; right: 22px; bottom: 19px; color: rgba(247, 239, 231, 0.5); font-family: "Courier New", monospace; font-size: 0.73rem; }
 .project-image-chess { background: linear-gradient(135deg, #28241b, #181714); }
 .project-image-jump { background: linear-gradient(135deg, #20242d, #171614); }
@@ -2731,6 +2739,10 @@ h1 span {
   }
 
   .project-image-placeholder {
+    min-height: 220px;
+  }
+
+  .project-image-video {
     min-height: 220px;
   }
 

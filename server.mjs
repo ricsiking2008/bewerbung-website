@@ -1,4 +1,5 @@
 import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
+import { spawnSync } from "node:child_process";
 import { promisify } from "node:util";
 import { ZipArchive } from "archiver";
 import { createReadStream, existsSync, promises as fs, statSync } from "node:fs";
@@ -30,6 +31,12 @@ const projectPreviews = {
 };
 const projectPreviewSites = {
   preblox: join(root, "projects", "gruppe-4-thierry-richard", "dist"),
+};
+const projectPreviewBuilds = {
+  preblox: {
+    cwd: join(root, "projects", "gruppe-4-thierry-richard"),
+    output: join(root, "projects", "gruppe-4-thierry-richard", "dist", "index.html"),
+  },
 };
 const production = process.env.NODE_ENV === "production";
 const port = Number(process.env.PORT || 3001);
@@ -293,7 +300,22 @@ function serveProjectArchive(response, projectId) {
   archive.finalize();
 }
 
+function ensureProjectPreview(projectId) {
+  const build = projectPreviewBuilds[projectId];
+  if (!build || existsSync(build.output)) return true;
+
+  const result = spawnSync(process.platform === "win32" ? "npm.cmd" : "npm", ["run", "build"], {
+    cwd: build.cwd,
+    stdio: "inherit",
+  });
+  return result.status === 0 && existsSync(build.output);
+}
+
 function serveProjectPreview(response, projectId, assetPath = "") {
+  if (!ensureProjectPreview(projectId)) {
+    return sendJson(response, 404, { error: "Projektvorschau nicht gefunden." });
+  }
+
   const sitePath = projectPreviewSites[projectId];
   if (sitePath) {
     const requested = assetPath || "index.html";
