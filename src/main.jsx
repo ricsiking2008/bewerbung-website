@@ -7,6 +7,15 @@ import motorcycleImageUrl from "./assets/motorrad.jpeg";
 import scoutsImageUrl from "./assets/pfadi.jpeg";
 import boardgamesImageUrl from "./assets/boardgames.jpeg";
 import snowboardingImageUrl from "./assets/snowboard.jpeg";
+import chessImageUrl from "./assets/chess.png";
+import jumpAndRunImageUrl from "./assets/jump_and_run.png";
+import classPageImageUrl from "./assets/klassenseite.png";
+import vendoSwissImageUrl from "./assets/vendoswiss.png";
+import stahlpartnerImageUrl from "./assets/stahlpartner.png";
+import swissactiveImageUrl from "./assets/swissactive.png";
+import tuneGuessVideoUrl from "./assets/TuneGuess.mp4";
+import healthClockVideoUrl from "./assets/smartwatch_video.mp4";
+import prebloxImageUrl from "./assets/preblox.png";
 import "./styles.css";
 
 const profile = {
@@ -270,7 +279,7 @@ const projects = [
       { label: "Play / .exe", href: "/api/projects/download/chess" },
       { label: "Projekt als ZIP", href: "/api/projects/archive/chess" },
     ],
-    placeholder: "chess",
+    image: chessImageUrl,
   },
   {
     name: "Jump and Run",
@@ -281,7 +290,7 @@ const projects = [
       { label: "Play / .exe", href: "/api/projects/download/jump-and-run" },
       { label: "Projekt als ZIP", href: "/api/projects/archive/jump-and-run" },
     ],
-    placeholder: "jump",
+    image: jumpAndRunImageUrl,
   },
   {
     name: "VendoSwiss",
@@ -292,7 +301,7 @@ const projects = [
       { label: "Website testen", href: "https://vendoswiss.ch", external: true },
       { label: "Projekt als ZIP", href: "/api/projects/archive/vendoswiss" },
     ],
-    placeholder: "vendo",
+    image: vendoSwissImageUrl,
   },
   {
     name: "Stahlpartner",
@@ -303,18 +312,18 @@ const projects = [
       { label: "Website testen", href: "https://stahlpartner.ch", external: true },
       { label: "Projekt als ZIP", href: "/api/projects/archive/stahlpartner" },
     ],
-    placeholder: "stahl",
+    image: stahlpartnerImageUrl,
   },
   {
     name: "Swissactive",
     type: "App",
-    summary: "Eine App-Idee rund um Aktivitäten und Wanderungen in der Schweiz.",
+    summary: "Eine App rund um Aktivitäten und Wanderungen in der Schweiz. Die Windows-App wird als vollständiges ZIP zum Entpacken bereitgestellt.",
     technologies: ["C#", ".NET MAUI", "XAML"],
     actions: [
-      { label: "App herunterladen", href: "/api/projects/download/swissactive" },
+      { label: "Windows-App herunterladen (.exe)", href: "/api/projects/download/swissactive" },
       { label: "Projekt als ZIP", href: "/api/projects/archive/swissactive" },
     ],
-    placeholder: "swiss",
+    image: swissactiveImageUrl,
   },
   {
     name: "Health Clock",
@@ -322,10 +331,43 @@ const projects = [
     summary: "Ein kleines Hardware-Projekt mit Sensorik und gesundheitsbezogenen Anzeigen.",
     technologies: ["Arduino", "C++", "Hardware"],
     actions: [
-      { label: "Projekt öffnen", href: "/api/projects/preview/health-clock" },
+      { label: "Demo-Video ansehen", href: "/video/smartwatch" },
       { label: "Projekt als ZIP", href: "/api/projects/archive/health-clock" },
     ],
-    placeholder: "clock",
+    placeholder: "video",
+  },
+  {
+    name: "Klassenseite",
+    type: "Website · 1. Semester",
+    summary: "Eine Klassenseite mit den Webseiten aus dem ersten Semester.",
+    technologies: ["HTML", "CSS", "JavaScript"],
+    actions: [
+      { label: "Website öffnen", href: "http://116.203.218.177/", external: true },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/klassenseite" },
+    ],
+    image: classPageImageUrl,
+  },
+  {
+    name: "TuneGuess",
+    type: "Mobile App · ÜK",
+    summary: "Eine im ÜK entwickelte Flutter-App zum Erraten von Songs. Das Demo-Video zeigt die App in Aktion.",
+    technologies: ["Flutter", "Dart", "Mobile"],
+    actions: [
+      { label: "Demo-Video ansehen", href: "/video/tuneguess" },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/tuneguess" },
+    ],
+    placeholder: "video",
+  },
+  {
+    name: "Preblox",
+    type: "ÜK · Teamprojekt",
+    summary: "Ein gemeinsam mit Thierry entwickeltes Webprojekt, das direkt im Browser gestartet werden kann.",
+    technologies: ["React", "Vite", "Node.js"],
+    actions: [
+      { label: "Projekt starten", href: "/api/projects/preview/preblox", external: true },
+      { label: "Projekt als ZIP", href: "/api/projects/archive/preblox" },
+    ],
+    image: prebloxImageUrl,
   },
 ];
 
@@ -538,7 +580,7 @@ function HomePage() {
             ))}
           </div>
           <div className="hero-links" aria-label="Wichtige Links">
-            <a href="/documents">-&gt; Bewerbungs-<br></br>unterlagen</a>
+            <a href="/documents">-&gt; Bewerbungsunterlagen</a>
             <a href={`mailto:${profile.email}`}>-&gt; Kontakt</a>
           </div>
         </div>
@@ -557,8 +599,9 @@ function HomePage() {
           </div>
         </aside>
 
-        <a className="scroll-hint" href="/about" aria-label="Mehr über mich">
-          v
+        <a className="scroll-hint" href="/about" aria-label="Zu Über mich">
+          <span>Zu Über mich</span>
+          <b aria-hidden="true">↓</b>
         </a>
       </section>
     </main>
@@ -576,11 +619,11 @@ function ProjectsPage() {
       </section>
 
       <section className="projects-grid" aria-label="Projektübersicht">
-        {projects.map((project, index) => (
+        {projects.map((project) => (
           <article className="project-card" key={project.name}>
-            <div className={`project-image-placeholder project-image-${project.placeholder}`}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>Bild folgt</strong>
+            <div className={`project-image-placeholder${project.placeholder ? ` project-image-${project.placeholder}` : ""}`}>
+              {project.image ? <img src={project.image} alt={`Vorschau des Projekts ${project.name}`} /> : null}
+              {!project.image ? <strong>{project.placeholder === "video" ? "Demo-Video verfügbar" : "Quellcode-Projekt"}</strong> : null}
               <small>{project.type}</small>
             </div>
             <div className="project-card-content">
@@ -589,7 +632,6 @@ function ProjectsPage() {
                   <p className="panel-label">{project.type}</p>
                   <h2>{project.name}</h2>
                 </div>
-                <span className="project-index">0{index + 1}</span>
               </div>
               <p className="project-summary">{project.summary}</p>
               <div className="project-tags" aria-label={`Technologien für ${project.name}`}>
@@ -613,6 +655,38 @@ function ProjectsPage() {
             </div>
           </article>
         ))}
+      </section>
+    </main>
+  );
+}
+
+function SmartwatchVideoPage() {
+  return (
+    <main className="video-page" style={{ "--accent": pages["/projects"].accent }}>
+      <section className="video-player-card" aria-labelledby="smartwatch-video-title">
+        <a className="video-back" href="/projects">← Zurück zu Projekten</a>
+        <p className="eyebrow">Health Clock · Demo</p>
+        <h1 id="smartwatch-video-title">Smartwatch-Video</h1>
+        <video autoPlay muted loop playsInline controls controlsList="nodownload" aria-label="Stummes Demo-Video des Health-Clock-Projekts">
+          <source src={healthClockVideoUrl} type="video/mp4" />
+        </video>
+        <p>Dieses Video startet bewusst ohne Ton.</p>
+      </section>
+    </main>
+  );
+}
+
+function TuneGuessVideoPage() {
+  return (
+    <main className="video-page" style={{ "--accent": pages["/projects"].accent }}>
+      <section className="video-player-card" aria-labelledby="tuneguess-video-title">
+        <a className="video-back" href="/projects">← Zurück zu Projekten</a>
+        <p className="eyebrow">TuneGuess · ÜK-Demo</p>
+        <h1 id="tuneguess-video-title">TuneGuess-Video</h1>
+        <video autoPlay playsInline controls controlsList="nodownload" aria-label="Demo-Video der TuneGuess-App">
+          <source src={tuneGuessVideoUrl} type="video/mp4" />
+        </video>
+        <p>Dieses Video wird mit Ton abgespielt.</p>
       </section>
     </main>
   );
@@ -756,6 +830,7 @@ function PlaceholderPage({ page }) {
           </div>
         ) : null}
       </section>
+      {isHobbiesStage ? <div className="hobbies-scroll-cue" aria-hidden="true"><span>Weiter scrollen</span><b>↓</b></div> : null}
     </main>
   );
 }
@@ -889,8 +964,9 @@ function DocumentsPage() {
         </> : null}
         {status === "error" ? <p className="auth-error">Die Dokumente konnten gerade nicht geladen werden.</p> : null}
         {status === "ready" ? <>
-          <div className="documents-heading">
+        <div className="documents-heading">
             <div><p className="eyebrow">Freigegeben für {user.company}</p><h1 id="documents-title">Dokumente</h1></div>
+            <a className="documents-download-all" href="/api/documents/archive">Alle als ZIP <span>↓</span></a>
           </div>
           <p className="documents-intro">Wähle ein Dokument aus, um die PDF-Datei anzusehen oder herunterzuladen.</p>
           <div className="document-grid">
@@ -962,6 +1038,10 @@ function App() {
         <DocumentsPage />
       ) : activePath === "/projects" ? (
         <ProjectsPage />
+      ) : activePath === "/video/smartwatch" ? (
+        <SmartwatchVideoPage />
+      ) : activePath === "/video/tuneguess" ? (
+        <TuneGuessVideoPage />
       ) : page ? (
         <PlaceholderPage page={page} />
       ) : (

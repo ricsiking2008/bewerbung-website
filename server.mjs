@@ -1,7 +1,7 @@
 import { createHash, randomBytes, scrypt as scryptCallback, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 import { ZipArchive } from "archiver";
-import { createReadStream, existsSync, promises as fs } from "node:fs";
+import { createReadStream, existsSync, promises as fs, statSync } from "node:fs";
 import { createServer } from "node:http";
 import { extname, join, normalize, resolve, sep } from "node:path"; // 'sep' hinzugefügt
 
@@ -12,7 +12,7 @@ const documentsPath = join(root, "private-documents");
 const projectDownloads = {
   chess: join(root, "projects", "Chess", "Chess.exe"),
   "jump-and-run": join(root, "projects", "Jump and Run", "WindowsFormsApp5", "bin", "Debug", "WindowsFormsApp5.exe"),
-  swissactive: join(root, "projects", "Swissactive", "Swissactive", "bin", "Debug", "net9.0-windows10.0.19041.0", "win10-arm64", "Swissactive.exe"),
+  swissactive: join(root, "projects", "Swissactive", "Swissactive", "bin", "Debug", "net9.0-windows10.0.19041.0", "win10-arm64"),
 };
 const projectArchives = {
   chess: join(root, "projects", "Chess"),
@@ -21,9 +21,15 @@ const projectArchives = {
   stahlpartner: join(root, "projects", "Stahlpartner"),
   swissactive: join(root, "projects", "Swissactive"),
   "health-clock": join(root, "projects", "Health-Clock"),
+  klassenseite: join(root, "projects", "Teil 3"),
+  tuneguess: join(root, "projects", "gruppe-7-richard-tuneguess"),
+  preblox: join(root, "projects", "gruppe-4-thierry-richard"),
 };
 const projectPreviews = {
   "health-clock": join(root, "projects", "Health-Clock", "index.html"),
+};
+const projectPreviewSites = {
+  preblox: join(root, "projects", "gruppe-4-thierry-richard", "dist"),
 };
 const production = process.env.NODE_ENV === "production";
 const port = Number(process.env.PORT || 3001);
@@ -219,20 +225,45 @@ async function serveDocument(request, response, fileName, download = false) {
   createReadStream(fullPath).pipe(response);
 }
 
+function serveDocumentsArchive(request, response) {
+  if (!currentSession(request)) return sendJson(response, 401, { error: "Bitte zuerst einloggen." });
+  addSecurityHeaders(response);
+  response.writeHead(200, {
+    "Content-Type": "application/zip",
+    "Content-Disposition": 'attachment; filename="Bewerbungsunterlagen_Richard_Eberhardt.zip"',
+    "Cache-Control": "private, no-store",
+    "X-Content-Type-Options": "nosniff",
+  });
+  const archive = new ZipArchive({ zlib: { level: 9 } });
+  archive.on("error", (error) => {
+    console.error(error);
+    response.destroy(error);
+  });
+  archive.pipe(response);
+  archive.glob("**/*", { cwd: documentsPath, ignore: ["**/.gitkeep", "**/README.md"] });
+  archive.finalize();
+}
+
 function serveProjectDownload(response, projectId) {
   const filePath = projectDownloads[projectId];
   if (!filePath || !existsSync(filePath)) {
     return sendJson(response, 404, { error: "Download nicht gefunden." });
   }
 
+  const isFolder = statSync(filePath).isDirectory();
   addSecurityHeaders(response);
   response.writeHead(200, {
-    "Content-Type": "application/octet-stream",
-    "Content-Disposition": `attachment; filename="${projectId}.exe"`,
+    "Content-Type": isFolder ? "application/zip" : "application/octet-stream",
+    "Content-Disposition": `attachment; filename="${projectId}.${isFolder ? "zip" : "exe"}"`,
     "Cache-Control": "no-store",
     "X-Content-Type-Options": "nosniff",
   });
-  createReadStream(filePath).pipe(response);
+  if (!isFolder) return createReadStream(filePath).pipe(response);
+  const archive = new ZipArchive({ zlib: { level: 9 } });
+  archive.on("error", (error) => response.destroy(error));
+  archive.pipe(response);
+  archive.directory(filePath, false);
+  archive.finalize();
 }
 
 function serveProjectArchive(response, projectId) {
@@ -262,7 +293,23 @@ function serveProjectArchive(response, projectId) {
   archive.finalize();
 }
 
-function serveProjectPreview(response, projectId) {
+function serveProjectPreview(response, projectId, assetPath = "") {
+  const sitePath = projectPreviewSites[projectId];
+  if (sitePath) {
+    const requested = assetPath || "index.html";
+    const candidate = resolve(sitePath, requested);
+    const safePath = candidate.startsWith(resolve(sitePath) + sep) && existsSync(candidate)
+      ? candidate
+      : !extname(requested) ? join(sitePath, "index.html") : null;
+    if (!safePath || !existsSync(safePath)) return sendJson(response, 404, { error: "Projektvorschau nicht gefunden." });
+    addSecurityHeaders(response);
+    response.writeHead(200, {
+      "Content-Type": MIME_TYPES[extname(safePath).toLowerCase()] || "application/octet-stream",
+      "Cache-Control": "no-store",
+      "X-Content-Type-Options": "nosniff",
+    });
+    return createReadStream(safePath).pipe(response);
+  }
   const filePath = projectPreviews[projectId];
   if (!filePath || !existsSync(filePath)) {
     return sendJson(response, 404, { error: "Projektvorschau nicht gefunden." });
@@ -305,7 +352,8 @@ async function handleApi(request, response, url) {
     return serveProjectArchive(response, decodeURIComponent(url.pathname.slice("/api/projects/archive/".length)));
   }
   if (request.method === "GET" && url.pathname.startsWith("/api/projects/preview/")) {
-    return serveProjectPreview(response, decodeURIComponent(url.pathname.slice("/api/projects/preview/".length)));
+    const [projectId, ...assetParts] = decodeURIComponent(url.pathname.slice("/api/projects/preview/".length)).split("/");
+    return serveProjectPreview(response, projectId, assetParts.join("/"));
   }
   if (request.method === "GET" && url.pathname.startsWith("/api/projects/download/")) {
     return serveProjectDownload(response, decodeURIComponent(url.pathname.slice("/api/projects/download/".length)));
@@ -326,6 +374,9 @@ async function handleApi(request, response, url) {
     if (!currentSession(request)) return sendJson(response, 401, { error: "Bitte zuerst einloggen." });
     const files = existsSync(documentsPath) ? (await fs.readdir(documentsPath)).filter((file) => MIME_TYPES[extname(file).toLowerCase()]) : [];
     return sendJson(response, 200, { files });
+  }
+  if (request.method === "GET" && url.pathname === "/api/documents/archive") {
+    return serveDocumentsArchive(request, response);
   }
   if (request.method === "GET" && url.pathname.startsWith("/api/documents/")) {
     return serveDocument(request, response, decodeURIComponent(url.pathname.slice("/api/documents/".length)), url.searchParams.get("download") === "1");
