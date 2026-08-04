@@ -191,35 +191,38 @@ const hobbyImages = {
 
 const aboutSkillGroups = [
   {
-    title: "Frontend",
+    title: "Programmiersprachen",
     skills: [
-      { name: "HTML", level: 95 },
-      { name: "CSS", level: 85 },
-      { name: "JavaScript", level: 60 },
+      { name: "C++", level: 90 }, { name: "C", level: 80 }, { name: "C#", level: 85 },
+      { name: "Python", level: 83 }, { name: "Java", level: 80 },
     ],
   },
   {
-    title: "Frameworks",
+    title: "Web & Apps",
     skills: [
-      { name: "React", level: 70 },
-      { name: "UI Design", level: 75 },
-      { name: "Responsive", level: 82 },
+      { name: "HTML", level: 93 }, { name: "CSS", level: 92 }, { name: "JavaScript", level: 85 },
+      { name: "React", level: 90 }, { name: "Flutter", level: 75 },
     ],
   },
   {
-    title: "Basics",
+    title: "Tools & Daten",
     skills: [
-      { name: "Git", level: 65 },
-      { name: "Debugging", level: 68 },
-      { name: "SQL", level: 80 },
+      { name: "VS Code", level: 90 }, { name: "GitHub / GitLab", level: 90 }, { name: "Docker", level: 85 },
+      { name: "SQL", level: 87 }, { name: "Redis", level: 83 }, { name: "MongoDB", level: 82 },
+    ],
+  },
+  {
+    title: "Design & Office",
+    skills: [
+      { name: "UI Design", level: 90 }, { name: "Word", level: 95 },
     ],
   },
   {
     title: "Persönlich",
     skills: [
+      { name: "Kommunikation", level: 95 }, { name: "Teamarbeit", level: 98 },
       { name: "Lernbereitschaft", level: 90 },
-      { name: "Verantwortung", level: 76 },
-      { name: "Fokus", level: 84 },
+      { name: "Verantwortung", level: 92 }, { name: "Belastbarkeit", level: 95 }, { name: "Kreativität", level: 93 },
     ],
   },
 ];
@@ -273,6 +276,7 @@ const projects = [
   {
     name: "Chess",
     type: "Windows Game",
+    category: "games",
     summary: "Ein eigenes Schachspiel für Windows mit klassischer Spiellogik.",
     technologies: ["C++", "Windows", "Game Logic"],
     actions: [
@@ -284,6 +288,7 @@ const projects = [
   {
     name: "Jump and Run",
     type: "Windows Game",
+    category: "games",
     summary: "Ein 2D-Jump-and-Run mit Levels, Steuerung und Retro-Feeling.",
     technologies: ["C#", "WinForms", "Game Design"],
     actions: [
@@ -295,6 +300,7 @@ const projects = [
   {
     name: "VendoSwiss",
     type: "Web Project",
+    category: "websites",
     summary: "Ein eigenständiges Webprojekt mit Fokus auf klare Abläufe und Benutzerführung.",
     technologies: ["HTML", "CSS", "JavaScript"],
     actions: [
@@ -306,6 +312,7 @@ const projects = [
   {
     name: "Stahlpartner",
     type: "Website",
+    category: "websites",
     summary: "Unternehmenswebsite mit mehreren Inhaltsseiten und einem Anfragebereich.",
     technologies: ["HTML", "CSS", "JavaScript", "PHP"],
     actions: [
@@ -317,6 +324,7 @@ const projects = [
   {
     name: "Swissactive",
     type: "App",
+    category: "apps",
     summary: "Eine App rund um Aktivitäten und Wanderungen in der Schweiz. Die Windows-App wird als vollständiges ZIP zum Entpacken bereitgestellt.",
     technologies: ["C#", ".NET MAUI", "XAML"],
     actions: [
@@ -328,6 +336,7 @@ const projects = [
   {
     name: "Health Clock",
     type: "Hardware Project",
+    category: "apps",
     summary: "Ein kleines Hardware-Projekt mit Sensorik und gesundheitsbezogenen Anzeigen.",
     technologies: ["Arduino", "C++", "Hardware"],
     actions: [
@@ -339,6 +348,7 @@ const projects = [
   {
     name: "Klassenseite",
     type: "Website · 1. Semester",
+    category: "websites",
     summary: "Eine Klassenseite mit den Webseiten aus dem ersten Semester.",
     technologies: ["HTML", "CSS", "JavaScript"],
     actions: [
@@ -350,6 +360,7 @@ const projects = [
   {
     name: "TuneGuess",
     type: "Mobile App · ÜK",
+    category: "uek",
     summary: "Eine im ÜK entwickelte Flutter-App zum Erraten von Songs. Das Demo-Video zeigt die App in Aktion.",
     technologies: ["Flutter", "Dart", "Mobile"],
     actions: [
@@ -361,6 +372,7 @@ const projects = [
   {
     name: "Preblox",
     type: "ÜK · Teamprojekt",
+    category: "uek",
     summary: "Ein gemeinsam mit Thierry entwickeltes Webprojekt, das direkt im Browser gestartet werden kann.",
     technologies: ["React", "Vite", "Node.js"],
     actions: [
@@ -609,6 +621,16 @@ function HomePage() {
 }
 
 function ProjectsPage() {
+  const filters = [
+    { id: "all", label: "Alle Projekte" },
+    { id: "websites", label: "Websites" },
+    { id: "apps", label: "Apps & Hardware" },
+    { id: "games", label: "Spiele" },
+    { id: "uek", label: "ÜK & Team" },
+  ];
+  const [activeFilter, setActiveFilter] = useState("all");
+  const visibleProjects = activeFilter === "all" ? projects : projects.filter((project) => project.category === activeFilter);
+
   return (
     <main className="projects-page" style={{ "--accent": pages["/projects"].accent }}>
       <section className="projects-hero" aria-labelledby="projects-title">
@@ -617,9 +639,12 @@ function ProjectsPage() {
         </div>
         <p>Eine Auswahl aus Websites, Apps, Spielen und kleinen Experimenten.</p>
       </section>
+      <div className="project-filters" aria-label="Projekte filtern">
+        {filters.map((filter) => <button className={activeFilter === filter.id ? "is-active" : ""} key={filter.id} onClick={() => setActiveFilter(filter.id)} type="button">{filter.label}</button>)}
+      </div>
 
       <section className="projects-grid" aria-label="Projektübersicht">
-        {projects.map((project) => (
+        {visibleProjects.map((project) => (
           <article className="project-card" key={project.name}>
             <div className={`project-image-placeholder${project.placeholder ? ` project-image-${project.placeholder}` : ""}`}>
               {project.image ? <img src={project.image} alt={`Vorschau des Projekts ${project.name}`} /> : null}
@@ -929,20 +954,11 @@ function DocumentsPage() {
 
   const documentCategories = [
     {
-      id: "zeugnisse",
-      title: "Zeugnisse",
-      fileHint: "zeugnisse.pdf oder zeugnisse-1.pdf",
-      matches: (file) => /^zeugnisse(?:[-_ ].*)?\.pdf$/i.test(file),
-      description: "Schulische Zeugnisse und Leistungsnachweise.",
-      number: "01",
-    },
-    {
-      id: "uek",
-      title: "ÜK",
-      fileHint: "uek-1.pdf, uek-2.pdf oder KNW-Dateien",
-      matches: (file) => /^(?:uek|knw).*\.pdf$/i.test(file),
-      description: "Nachweise aus überbetrieblichen Kursen.",
-      number: "02",
+      id: "lebenslauf",
+      title: "Lebenslauf",
+      fileHint: "lebenslauf.pdf",
+      matches: (file) => /^lebenslauf(?:[-_ ].*)?\.pdf$/i.test(file),
+      description: "Aktueller Lebenslauf von Richard Eberhardt.",
     },
     {
       id: "arbeitszeugnisse",
@@ -950,15 +966,20 @@ function DocumentsPage() {
       fileHint: "arbeitszeugnisse.pdf oder arbeitszeugnisse-1.pdf",
       matches: (file) => /^arbeitszeugnis(?:[-_ ].*)?\.pdf$/i.test(file),
       description: "Arbeitsbestätigungen und Referenzen.",
-      number: "03",
     },
     {
-      id: "lebenslauf",
-      title: "Lebenslauf",
-      fileHint: "lebenslauf.pdf",
-      matches: (file) => /^lebenslauf(?:[-_ ].*)?\.pdf$/i.test(file),
-      description: "Aktueller Lebenslauf von Richard Eberhardt.",
-      number: "04",
+      id: "uek",
+      title: "ÜK",
+      fileHint: "uek-1.pdf, uek-2.pdf oder KNW-Dateien",
+      matches: (file) => /^(?:uek|knw).*\.pdf$/i.test(file),
+      description: "Nachweise aus überbetrieblichen Kursen.",
+    },
+    {
+      id: "zeugnisse",
+      title: "Zeugnisse",
+      fileHint: "zeugnisse.pdf oder zeugnisse-1.pdf",
+      matches: (file) => /^zeugnis(?:[-_ ].*)?\.pdf$/i.test(file),
+      description: "Schulische Zeugnisse und Leistungsnachweise.",
     },
   ];
 
@@ -986,7 +1007,7 @@ function DocumentsPage() {
               return (
                 <article className={`document-tile${categoryFiles.length ? " is-available" : ""}`} key={category.id}>
                   <div className="document-tile-top">
-                    <span className="document-number">{category.number}</span>
+                    <span aria-hidden="true" />
                     <span className="document-filetype">PDF</span>
                   </div>
                   <div>
