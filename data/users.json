@@ -19,5 +19,12 @@
     "salt": "0a9c04b1e73dfe242670c742e6cf1367",
     "passwordHash": "f69b57a3c95e9cb2886844d11cf105d5500c1559b0c118d1c0c0406542a33d8116437843802bb82b66bfc6c50e241b900f76b775c532d9925c16b8cffc31a211",
     "createdAt": "2026-07-28T11:30:21.397Z"
+  },
+  {
+    "company": "wir-lernen-weiter",
+    "email": "wir-lernen-weiter@praktikum.com",
+    "salt": "37221da2b75d6e4c62b0c4bb9408192f",
+    "passwordHash": "2ee8f90545354dd45f24dbdaa7fec4fd48a7b60a3269bb1faab0dcdb0a61fb8ab48ce2c39ef63c0be7d4c5afb4b17c2937933ec9500f48c12cd2a156445e1ed0",
+    "createdAt": "2026-08-05T12:06:34.394Z"
   }
 ]
