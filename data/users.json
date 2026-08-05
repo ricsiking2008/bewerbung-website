@@ -26,5 +26,12 @@
     "salt": "37221da2b75d6e4c62b0c4bb9408192f",
     "passwordHash": "2ee8f90545354dd45f24dbdaa7fec4fd48a7b60a3269bb1faab0dcdb0a61fb8ab48ce2c39ef63c0be7d4c5afb4b17c2937933ec9500f48c12cd2a156445e1ed0",
     "createdAt": "2026-08-05T12:06:34.394Z"
+  },
+  {
+    "company": "renuo",
+    "email": "renuo@praktikum.com",
+    "salt": "a98804573a167cf223776bb2328a424d",
+    "passwordHash": "6b8166b08376e9f24a0192098ed6a42706acd0bb6d9dbabb19a95e7e0d07b02f07bcc5f009907d202f17cfff657a0338cec19462bae20834ca0b8ac0702898b5",
+    "createdAt": "2026-08-05T12:16:31.902Z"
   }
 ]
