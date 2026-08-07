@@ -40,5 +40,12 @@
     "salt": "581087cded38850a3c68937658a28145",
     "passwordHash": "9e06e8c59ab19d49e82987b768668faecda04fd6f5ffeb2bb4fdf0f40d14bfea69271c0cb33cca44d69f567608234d58815ce983893d0b38cbdc66bc8690a5f8",
     "createdAt": "2026-08-07T14:23:32.349Z"
+  },
+  {
+    "company": "suxesiv",
+    "email": "suxesiv@praktikum.com",
+    "salt": "99b6eff21de16b333c9fbc331f45a015",
+    "passwordHash": "183e0fc93c460113f4bed23bf81fc13d570cabeabd6b0c8ff42425a97e37576d98919524798166bf4f51b0aa6618a2341b50b772adadf21596c119867cd20356",
+    "createdAt": "2026-08-07T14:39:49.150Z"
   }
 ]
