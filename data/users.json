@@ -33,5 +33,12 @@
     "salt": "a98804573a167cf223776bb2328a424d",
     "passwordHash": "6b8166b08376e9f24a0192098ed6a42706acd0bb6d9dbabb19a95e7e0d07b02f07bcc5f009907d202f17cfff657a0338cec19462bae20834ca0b8ac0702898b5",
     "createdAt": "2026-08-05T12:16:31.902Z"
+  },
+  {
+    "company": "strichpunkt",
+    "email": "strichpunkt@praktikum.com",
+    "salt": "581087cded38850a3c68937658a28145",
+    "passwordHash": "9e06e8c59ab19d49e82987b768668faecda04fd6f5ffeb2bb4fdf0f40d14bfea69271c0cb33cca44d69f567608234d58815ce983893d0b38cbdc66bc8690a5f8",
+    "createdAt": "2026-08-07T14:23:32.349Z"
   }
 ]
